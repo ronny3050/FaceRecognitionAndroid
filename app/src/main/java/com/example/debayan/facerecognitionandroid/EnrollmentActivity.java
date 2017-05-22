@@ -1,9 +1,9 @@
 package com.example.debayan.facerecognitionandroid;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.hardware.Camera;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -11,7 +11,6 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.debayan.facerecognitionandroid.Utils.DBHelper;
 import com.example.debayan.facerecognitionandroid.Utils.SaveFaceImage;
@@ -84,30 +83,32 @@ public class EnrollmentActivity extends Activity {
         // Add Instructions text
         instructions = new TextView(this);
         instructions.setText("Enter user name below");
+        instructions.setTextSize(18);
         layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
         layoutParams.addRule(RelativeLayout.INVISIBLE);
-        layoutParams.setMargins(0, 200, 0, 0);
+        layoutParams.setMargins(0, 650, 0, 0);
         mLayout.addView(instructions, layoutParams);
 
         // Add userName EditText field
         userName = new EditText(this);
-        userName.setHint("Enter user name");
+        userName.setHint("User name");
         layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
         layoutParams.addRule(RelativeLayout.CENTER_VERTICAL);
         layoutParams.addRule(RelativeLayout.INVISIBLE);
+        layoutParams.addRule(RelativeLayout.BELOW,instructions.getId());
         mLayout.addView(userName, layoutParams);
 
         // Add Submit button
         submitButton = new Button(this);
-        instructions.setText("Done");
+        submitButton.setText("Done");
         layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
         layoutParams.addRule(RelativeLayout.INVISIBLE);
-        layoutParams.setMargins(0, 15, 0, 0);
+        layoutParams.addRule(RelativeLayout.BELOW,userName.getId());
+        layoutParams.setMargins(0, 1000, 0, 0);
         mLayout.addView(submitButton, layoutParams);
 
         initViews();
@@ -122,6 +123,15 @@ public class EnrollmentActivity extends Activity {
             instructions.setVisibility(View.VISIBLE);
             userName.setVisibility(View.VISIBLE);
             submitButton.setVisibility(View.VISIBLE);
+        }else{
+            // Hide camera preview and enroll button
+            mPreview.setVisibility(View.VISIBLE);
+            enrollButton.setVisibility(View.VISIBLE);
+
+            // Show name editText
+            instructions.setVisibility(View.INVISIBLE);
+            userName.setVisibility(View.INVISIBLE);
+            submitButton.setVisibility(View.INVISIBLE);
         }
 
     }
@@ -134,16 +144,16 @@ public class EnrollmentActivity extends Activity {
             }
         });
 
-        userName.setOnKeyListener(new View.OnKeyListener() {
+        submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
-                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    // Perform action on key press
-                    Toast.makeText(getApplicationContext(), userName.getText(), Toast.LENGTH_SHORT).show();
-                    return true;
-                }
-                return false;
+            public void onClick(View v) {
+                User user = new User();
+                user.setUserName(userName.getText().toString());
+                dbHelper.addUser(user);
+                // Restart activity
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
             }
         });
     }

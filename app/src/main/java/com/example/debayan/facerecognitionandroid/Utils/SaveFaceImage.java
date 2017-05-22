@@ -20,6 +20,7 @@ public class SaveFaceImage extends AsyncTask<TaskParams,Void,Void> {
 
     @Override
     protected Void doInBackground(TaskParams... params) {
+        String userName = params[0].n;
         int fc = params[0].f;
         byte[] data = params[0].d;
         boolean isTraining = params[0].t;

@@ -19,9 +19,6 @@ public class DBHelper extends SQLiteOpenHelper {
     /* USERS TABLE */
     public static final String TABLE_USERS = "users";
     public static final String COLUMN_NAME = "name";
-    public static final String COLUMN_EMAIL = "email";
-    public static final String COLUMN_COMPANY = "company";
-    public static final String COLUMN_PASSWORD = "password";
 
 
     public DBHelper(Context context) {
@@ -38,10 +35,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void createUserTable(SQLiteDatabase db) {
         String query = "CREATE TABLE " + TABLE_USERS + "(" +
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_NAME + " TEXT, " +
-                COLUMN_EMAIL + " TEXT, " +
-                COLUMN_COMPANY + " TEXT, " +
-                COLUMN_PASSWORD + " TEXT " +
+                COLUMN_NAME + " TEXT " +
                 ");";
         db.execSQL(query);
     }

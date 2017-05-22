@@ -126,7 +126,6 @@ google-services.json
 
 !/gradle/wrapper/gradle-wrapper.jar
 .idea/copyright/
-app/libs/
 app/src/main/assets/
 app/src/main/res/drawable/
 /app/src/main/jniLibs/
